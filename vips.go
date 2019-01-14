@@ -76,6 +76,18 @@ type vipsWatermarkTextOptions struct {
 	Font *C.char
 }
 
+type vipsTextOptions struct {
+	Text 	*C.char
+	Font 	*C.char
+	Left    C.int
+	Top     C.int
+	Width   C.int
+	Height  C.int
+	DPI     C.int
+	Opacity C.float
+	Spacing C.int
+}
+
 func init() {
 	Initialize()
 }
@@ -697,6 +709,16 @@ func vipsDrawWatermark(image *C.VipsImage, o WatermarkImage) (*C.VipsImage, erro
 
 	err := C.vips_watermark_image(image, watermark, &out, (*C.WatermarkImageOptions)(unsafe.Pointer(&opts)))
 
+	if err != 0 {
+		return nil, catchVipsError()
+	}
+
+	return out, nil
+}
+
+func vipsText(image *C.VipsImage, to vipsTextOptions) (*C.VipsImage, error) {
+	var out *C.VipsImage
+	err := C.vips_text_bridge(image, &out, (*C.VipsTextOptions)(unsafe.Pointer(&to)))
 	if err != 0 {
 		return nil, catchVipsError()
 	}

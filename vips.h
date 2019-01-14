@@ -55,6 +55,18 @@ typedef struct {
 	float    Opacity;
 } WatermarkImageOptions;
 
+typedef struct {
+	const char *Text;
+	const char *Font;
+	int    	Left;
+	int    	Top;
+	int    	Width;
+	int    	Height;
+	int    	DPI;
+	float  	Opacity;
+	int 	Spacing;
+} VipsTextOptions;
+
 static unsigned long
 has_profile_embed(VipsImage *image) {
 	return vips_image_get_typeof(image, VIPS_META_ICC_NAME);
@@ -560,4 +572,31 @@ int vips_find_trim_bridge(VipsImage *in, int *top, int *left, int *width, int *h
 #else
 	return 0;
 #endif
+}
+
+//https://fossies.org/linux/vips/libvips/create/text.c
+int
+vips_text_bridge(VipsImage *in, VipsImage **out, VipsTextOptions *to) {
+	VipsImage *base = vips_image_new();
+	VipsImage **t = (VipsImage **) vips_object_local_array(VIPS_OBJECT(base), 5);
+	t[0] = in;
+
+	// Make the mask.
+	if (
+		vips_text(&t[1], to->Text,
+			"width", to->Width,
+			"dpi", to->DPI,
+			"font", to->Font,
+			"spacing", to->Spacing,
+			NULL) ||
+		vips_linear1(t[1], &t[2], to->Opacity, 0.0, NULL) ||
+		vips_cast(t[2], &t[3], VIPS_FORMAT_UCHAR, NULL) ||
+		vips_embed(t[3], &t[4], to->Left, to->Top, to->Width, to->Height, NULL)
+		) {
+		g_object_unref(base);
+		return 1;
+	}
+
+	g_object_unref(base);
+	return 0;
 }
