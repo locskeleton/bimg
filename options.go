@@ -186,6 +186,20 @@ type Sharpen struct {
 	M2     float64
 }
 
+// TextOption represents the memory stats provided by libvips.
+type TextOption struct {
+	Text 	string
+	Font 	string
+	Left    int
+	Top     int
+	Width   int
+	Height  int
+	DPI     int
+	Opacity float32
+	Spacing int
+}
+
+
 // Options represents the supported image transformation options.
 type Options struct {
 	Height         int
@@ -216,6 +230,7 @@ type Options struct {
 	Gravity        Gravity
 	Watermark      Watermark
 	WatermarkImage WatermarkImage
+	TextOption    TextOption
 	Type           ImageType
 	Interpolator   Interpolator
 	Interpretation Interpretation

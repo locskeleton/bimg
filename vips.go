@@ -76,19 +76,6 @@ type vipsWatermarkTextOptions struct {
 	Font *C.char
 }
 
-// TextOptions represents the memory stats provided by libvips.
-type TextOptions struct {
-	Text 	string
-	Font 	string
-	Left    int
-	Top     int
-	Width   int
-	Height  int
-	DPI     int
-	Opacity float32
-	Spacing int
-}
-
 type vipsTextOptions struct {
 	Text 	*C.char
 	Font 	*C.char
@@ -729,7 +716,7 @@ func vipsDrawWatermark(image *C.VipsImage, o WatermarkImage) (*C.VipsImage, erro
 	return out, nil
 }
 
-func vipsText(image *C.VipsImage, to TextOptions) (*C.VipsImage, error) {
+func vipsText(image *C.VipsImage, to TextOption) (*C.VipsImage, error) {
 	var out *C.VipsImage
 	text := C.CString(to.Text)
 	font := C.CString(to.Font)

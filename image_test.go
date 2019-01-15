@@ -553,11 +553,12 @@ func assertSize(buf []byte, width, height int) error {
 
 
 func TestImageText(t *testing.T) {
-	image := initImage("test.jpg")
-	
-	textOption := TextOptions{
+	buf := initImage("test.jpg")
+	image, err := NewImage(buf).Resize(800, 600)
+
+	textOption := TextOption{
 		Text:       "Copy me if you can",
-		Font:       "sans bold 12",
+		Font:       "sans bold 14",
 		Left:		30,
 		Top: 		30,
 		Width:      200,

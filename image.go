@@ -233,3 +233,9 @@ func (i *Image) Image() []byte {
 func (i *Image) Length() int {
 	return len(i.buffer)
 }
+
+// Text adds text on the given image.
+func (i *Image) Text(w TextOption) ([]byte, error) {
+	options := Options{TextOption: w}
+	return i.Process(options)
+}
