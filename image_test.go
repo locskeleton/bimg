@@ -553,10 +553,13 @@ func assertSize(buf []byte, width, height int) error {
 
 
 func TestImageText(t *testing.T) {
-	buf := initImage("test.jpg")
-	image, err := NewImage(buf).Resize(800, 600)
+	image := initImage("test.jpg")
+	_, err := image.Crop(800, 600, GravityNorth)
+	if err != nil {
+		t.Errorf("Cannot process the image: %#v", err)
+	}
 
-	textOption := TextOption{
+	buf, err := image.Text(TextOption{
 		Text:       "Copy me if you can",
 		Font:       "sans bold 14",
 		Left:		30,
@@ -565,16 +568,10 @@ func TestImageText(t *testing.T) {
 		Height:		30,
 		DPI:        100,
 		Opacity:    0.5,
-	}
-
-	newImg, err := vipsText(image, textOption)
+	})
+	
 	if err != nil {
 		t.Error(err)
-	}
-
-	buf, _ := vipsSave(newImg, vipsSaveOptions{Quality: 95})
-	if len(buf) == 0 {
-		t.Fatal("Empty image")
 	}
 	
 	Write("testdata/test_image_text_out.jpg", buf)

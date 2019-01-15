@@ -121,6 +121,12 @@ func resizer(buf []byte, o Options) ([]byte, error) {
 		return nil, err
 	}
 
+	// Add text on image, if necessary
+	image, err = addTextOnImage(image, o.TextOption)
+	if err != nil {
+		return nil, err
+	}
+
 	return saveImage(image, o)
 }
 
@@ -566,4 +572,29 @@ func getAngle(angle Angle) Angle {
 		angle = angle - divisor
 	}
 	return Angle(math.Min(float64(angle), 270))
+}
+
+func addTextOnImage(image *C.VipsImage, w TextOption) (*C.VipsImage, error) {
+	if w.Text == "" {
+		return image, nil
+	}
+
+	// Defaults
+	if w.Font == "" {
+		w.Font = WatermarkFont
+	}
+
+	if w.Width == 0 {
+		w.Width = int(math.Floor(float64(image.Xsize / 6)))
+	}
+	if w.Height == 0 {
+		w.Height = int(math.Floor(float64(image.Ysize / 6)))
+	}
+
+	image, err := vipsText(image, w)
+	if err != nil {
+		return nil, err
+	}
+
+	return image, nil
 }
