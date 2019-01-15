@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <vips/vips.h>
 #include <vips/foreign.h>
@@ -605,12 +606,14 @@ int vips_find_trim_bridge(VipsImage *in, int *top, int *left, int *width, int *h
 
 int
 vips_text_bridge(VipsImage *in, VipsImage **out, VipsTextOptions *to) {
+	printf("Step0");
 	double ones[3] = { 1, 1, 1 };
 
 	VipsImage *base = vips_image_new();
 	VipsImage **t = (VipsImage **) vips_object_local_array(VIPS_OBJECT(base), 10);
 	t[0] = in;
 
+	printf("Step1");
 	// Make the mask.
 	if (
 		vips_text(&t[1], to->Text,
@@ -626,6 +629,8 @@ vips_text_bridge(VipsImage *in, VipsImage **out, VipsTextOptions *to) {
 		return 1;
 	}
 
+	printf("Step2");
+
 	// Make the constant image to paint the text with.
 	if (
 		vips_black(&t[5], 1, 1, NULL) ||
@@ -638,11 +643,15 @@ vips_text_bridge(VipsImage *in, VipsImage **out, VipsTextOptions *to) {
 		return 1;
 	}
 
+	printf("Step3");
+
 	// Blend the mask and text and write to output.
 	if (vips_ifthenelse(t[4], t[9], t[0], out, "blend", TRUE, NULL)) {
 		g_object_unref(base);
 		return 1;
 	}
+
+	printf("Step4");
 
 	g_object_unref(base);
 	return 0;
