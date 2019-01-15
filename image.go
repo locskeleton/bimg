@@ -241,6 +241,5 @@ func (i *Image) Length() int {
 // Text adds text on the given image.
 func (i *Image) Text(w TextOption) ([]byte, error) {
 	options := Options{TextOption: w}
-	fmt.Fprintln(options)
 	return i.Process(options)
 }

@@ -230,7 +230,7 @@ type Options struct {
 	Gravity        Gravity
 	Watermark      Watermark
 	WatermarkImage WatermarkImage
-	TextOption    TextOption
+	TextOption     TextOption
 	Type           ImageType
 	Interpolator   Interpolator
 	Interpretation Interpretation
