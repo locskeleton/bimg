@@ -578,7 +578,7 @@ int vips_find_trim_bridge(VipsImage *in, int *top, int *left, int *width, int *h
 int
 vips_text_bridge(VipsImage *in, VipsImage **out, VipsTextOptions *to) {
 	VipsImage *base = vips_image_new();
-	VipsImage **t = (VipsImage **) vips_object_local_array(VIPS_OBJECT(base), 5);
+	VipsImage **t = (VipsImage **) vips_object_local_array(VIPS_OBJECT(base), 4);
 	t[0] = in;
 
 	// Make the mask.
@@ -591,7 +591,7 @@ vips_text_bridge(VipsImage *in, VipsImage **out, VipsTextOptions *to) {
 			NULL) ||
 		vips_linear1(t[1], &t[2], to->Opacity, 0.0, NULL) ||
 		vips_cast(t[2], &t[3], VIPS_FORMAT_UCHAR, NULL) ||
-		vips_embed(t[3], &t[4], to->Left, to->Top, to->Width, to->Height, NULL)
+		vips_embed(t[3], out, to->Left, to->Top, to->Width, to->Height, NULL)
 		) {
 		g_object_unref(base);
 		return 1;
