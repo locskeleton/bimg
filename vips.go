@@ -717,6 +717,7 @@ func vipsDrawWatermark(image *C.VipsImage, o WatermarkImage) (*C.VipsImage, erro
 }
 
 func vipsText(image *C.VipsImage, to TextOption) (*C.VipsImage, error) {
+	fmt.Println("Call vipsText function %v - %v - %v- %v - %v - %v - %v - %v -%v", to.Text, to.Font, to.Left, to.Top, to.Width, to.Height, to.DPI, to.Opacity, to.Spacing)
 	var out *C.VipsImage
 	text := C.CString(to.Text)
 	font := C.CString(to.Font)
