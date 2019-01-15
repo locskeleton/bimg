@@ -172,7 +172,7 @@ func readImage(file string) []byte {
 func TestVipsText(t *testing.T) {
 	image, _, _ := vipsRead(readImage("test.jpg"))
 
-	textOption := vipsTextOptions{
+	textOption := TextOptions{
 		Text:       "Copy me if you can",
 		Font:       "sans bold 12",
 		Left:		30,
