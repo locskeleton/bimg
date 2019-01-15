@@ -559,8 +559,8 @@ func TestImageText(t *testing.T) {
 		t.Errorf("Cannot process the image: %#v", err)
 	}
 
-	buf, err := image.Text(TextOption{
-		Text:       "Copy me if you can",
+	textOptions := TextOption{
+		Text:       "Add text in image",
 		Font:       "sans bold 14",
 		Left:		30,
 		Top: 		30,
@@ -568,8 +568,10 @@ func TestImageText(t *testing.T) {
 		Height:		30,
 		DPI:        100,
 		Opacity:    0.5,
-	})
-	
+	}
+
+	buf, err := image.Text(textOptions)
+
 	if err != nil {
 		t.Error(err)
 	}
