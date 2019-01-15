@@ -727,12 +727,14 @@ func vipsText(image *C.VipsImage, to TextOption) (*C.VipsImage, error) {
 
 	defer C.free(unsafe.Pointer(text))
 	defer C.free(unsafe.Pointer(font))
+	var textOptions = (*C.VipsTextOptions)(unsafe.Pointer(&opts))
 	
 	fmt.Println("Prepare call C.vips_text_bridge function")
-	err := C.vips_text_bridge(image, &out, (*C.VipsTextOptions)(unsafe.Pointer(&opts)))
+	err := C.vips_text_bridge(image, &out, textOptions)
 	if err != 0 {
 		return nil, catchVipsError()
 	}
 
+	fmt.Println("After call C.vips_text_bridge function")
 	return out, nil
 }
