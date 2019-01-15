@@ -573,7 +573,7 @@ func TestImageText(t *testing.T) {
 	buf, err := image.Text(textOptions)
 
 	if err != nil {
-		t.Error(err)
+		t.Errorf("Cannot process the image: %#v", err)
 	}
 	
 	Write("testdata/test_image_text_out.jpg", buf)
