@@ -587,7 +587,7 @@ vips_text_bridge(VipsImage *in, VipsImage **out, VipsTextOptions *to) {
 			"width", to->Width,
 			"dpi", to->DPI,
 			"font", to->Font,
-			"spacing", to->Spacing,
+			//"spacing", to->Spacing,
 			NULL) ||
 		vips_linear1(t[1], &t[2], to->Opacity, 0.0, NULL) ||
 		vips_cast(t[2], &t[3], VIPS_FORMAT_UCHAR, NULL) ||
