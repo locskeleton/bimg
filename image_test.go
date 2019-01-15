@@ -550,3 +550,31 @@ func assertSize(buf []byte, width, height int) error {
 	}
 	return nil
 }
+
+
+func TestImageText(t *testing.T) {
+	image := initImage("test.jpg")
+	
+	textOption := TextOptions{
+		Text:       "Copy me if you can",
+		Font:       "sans bold 12",
+		Left:		30,
+		Top: 		30,
+		Width:      200,
+		Height:		30,
+		DPI:        100,
+		Opacity:    0.5,
+	}
+
+	newImg, err := vipsText(image, textOption)
+	if err != nil {
+		t.Error(err)
+	}
+
+	buf, _ := vipsSave(newImg, vipsSaveOptions{Quality: 95})
+	if len(buf) == 0 {
+		t.Fatal("Empty image")
+	}
+	
+	Write("testdata/test_image_text_out.jpg", buf)
+}
