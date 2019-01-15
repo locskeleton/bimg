@@ -77,15 +77,16 @@ type vipsWatermarkTextOptions struct {
 }
 
 type vipsTextOptions struct {
-	Text 	*C.char
-	Font 	*C.char
-	Left    C.int
-	Top     C.int
-	Width   C.int
-	Height  C.int
-	DPI     C.int
-	Opacity C.float
-	Spacing C.int
+	Text 		*C.char
+	Font 		*C.char
+	Left    	C.int
+	Top     	C.int
+	Width   	C.int
+	Height  	C.int
+	DPI     	C.int
+	Opacity 	C.float
+	Spacing 	C.int
+	Background  [3]C.double
 }
 
 func init() {
@@ -721,8 +722,12 @@ func vipsText(image *C.VipsImage, to TextOption) (*C.VipsImage, error) {
 	var out *C.VipsImage
 	text := C.CString(to.Text)
 	font := C.CString(to.Font)
-	opts := vipsTextOptions{text, font, C.int(to.Left), C.int(to.Top), C.int(to.Width), C.int(to.Height), C.int(to.DPI), C.float(to.Opacity), C.int(to.Spacing)}
+	background := [3]C.double{C.double(to.Background.R), C.double(to.Background.G), C.double(to.Background.B)}
+	opts := vipsTextOptions{text, font, C.int(to.Left), C.int(to.Top), C.int(to.Width), C.int(to.Height), C.int(to.DPI), C.float(to.Opacity), C.int(to.Spacing), background}
 
+	defer C.free(unsafe.Pointer(text))
+	defer C.free(unsafe.Pointer(font))
+	
 	fmt.Println("Prepare call C.vips_text_bridge function")
 	err := C.vips_text_bridge(image, &out, (*C.VipsTextOptions)(unsafe.Pointer(&opts)))
 	if err != 0 {

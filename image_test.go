@@ -568,6 +568,7 @@ func TestImageText(t *testing.T) {
 		Height:		30,
 		DPI:        100,
 		Opacity:    0.5,
+		Background: Color{255, 255, 255},
 	}
 
 	buf, err := image.Text(textOptions)

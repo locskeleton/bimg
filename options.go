@@ -188,15 +188,16 @@ type Sharpen struct {
 
 // TextOption represents the memory stats provided by libvips.
 type TextOption struct {
-	Text 	string
-	Font 	string
-	Left    int
-	Top     int
-	Width   int
-	Height  int
-	DPI     int
-	Opacity float32
-	Spacing int
+	Text 		string
+	Font 		string
+	Left    	int
+	Top     	int
+	Width   	int
+	Height  	int
+	DPI     	int
+	Opacity 	float32
+	Spacing 	int
+	Background  Color
 }
 
 
