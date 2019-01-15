@@ -731,9 +731,9 @@ func vipsText(image *C.VipsImage, to TextOption) (*C.VipsImage, error) {
 
 	fmt.Println("Prepare call C.vips_text_bridge function")
 	//err := C.vips_text_bridge(image, &out, textOptions)
-	if err != 0 {
-		return nil, catchVipsError()
-	}
+	// if err != 0 {
+	// 	return nil, catchVipsError()
+	// }
 
 	fmt.Println("After call C.vips_text_bridge function")
 	return out, nil
