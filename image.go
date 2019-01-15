@@ -1,9 +1,5 @@
 package bimg
 
-import (
-	"fmt"
-)
-
 // Image provides a simple method DSL to transform a given image as byte buffer.
 type Image struct {
 	buffer []byte
