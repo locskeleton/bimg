@@ -27,6 +27,8 @@ const (
 	GravitySouth
 	// GravityWest represents the west value used for image gravity orientation.
 	GravityWest
+	// GravitySmart enables libvips Smart Crop algorithm for image gravity orientation.
+	GravitySmart
 )
 
 // Interpolator represents the image interpolation value.
@@ -39,12 +41,15 @@ const (
 	Bilinear
 	// Nohalo interpolation value.
 	Nohalo
+	// Nearest neighbour interpolation value.
+	Nearest
 )
 
 var interpolations = map[Interpolator]string{
 	Bicubic:  "bicubic",
 	Bilinear: "bilinear",
 	Nohalo:   "nohalo",
+	Nearest:  "nearest",
 }
 
 func (i Interpolator) String() string {
@@ -84,7 +89,7 @@ const (
 )
 
 // Interpretation represents the image interpretation type.
-// See: http://www.vips.ecs.soton.ac.uk/supported/current/doc/html/libvips/VipsImage.html#VipsInterpretation
+// See: https://jcupitt.github.io/libvips/API/current/VipsImage.html#VipsInterpretation
 type Interpretation int
 
 const (
@@ -114,7 +119,7 @@ const (
 
 // Extend represents the image extend mode, used when the edges
 // of an image are extended, you can specify how you want the extension done.
-// See: http://www.vips.ecs.soton.ac.uk/supported/8.4/doc/html/libvips/libvips-conversion.html#VIPS-EXTEND-BACKGROUND:CAPS
+// See: https://jcupitt.github.io/libvips/API/current/libvips-conversion.html#VIPS-EXTEND-BACKGROUND:CAPS
 type Extend int
 
 const (
@@ -157,6 +162,14 @@ type Watermark struct {
 	Background  Color
 }
 
+// WatermarkImage represents the image-based watermark supported options.
+type WatermarkImage struct {
+	Left    int
+	Top     int
+	Buf     []byte
+	Opacity float32
+}
+
 // GaussianBlur represents the gaussian image transformation values.
 type GaussianBlur struct {
 	Sigma   float64
@@ -185,6 +198,7 @@ type Options struct {
 	Compression    int
 	Zoom           int
 	Crop           bool
+	SmartCrop      bool // Deprecated, use: bimg.Options.Gravity = bimg.GravitySmart
 	Enlarge        bool
 	Embed          bool
 	Flip           bool
@@ -193,14 +207,20 @@ type Options struct {
 	NoAutoRotate   bool
 	NoProfile      bool
 	Interlace      bool
+	StripMetadata  bool
+	Trim           bool
+	Lossless       bool
 	Extend         Extend
 	Rotate         Angle
 	Background     Color
 	Gravity        Gravity
 	Watermark      Watermark
+	WatermarkImage WatermarkImage
 	Type           ImageType
 	Interpolator   Interpolator
 	Interpretation Interpretation
 	GaussianBlur   GaussianBlur
 	Sharpen        Sharpen
+	Threshold      float64
+	OutputICC      string
 }
