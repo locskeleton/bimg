@@ -122,6 +122,7 @@ func resizer(buf []byte, o Options) ([]byte, error) {
 	}
 
 	// Add text on image, if necessary
+	fmt.Fprintln("Add text on image")
 	image, err = addTextOnImage(image, o.TextOption)
 	if err != nil {
 		return nil, err
@@ -575,6 +576,7 @@ func getAngle(angle Angle) Angle {
 }
 
 func addTextOnImage(image *C.VipsImage, w TextOption) (*C.VipsImage, error) {
+	fmt.Fprintln("Call addTextOnImage function")
 	if w.Text == "" {
 		return image, nil
 	}
