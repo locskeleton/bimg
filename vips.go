@@ -720,21 +720,23 @@ func vipsDrawWatermark(image *C.VipsImage, o WatermarkImage) (*C.VipsImage, erro
 func vipsText(image *C.VipsImage, to TextOption) (*C.VipsImage, error) {
 	fmt.Println("Call vipsText function %v - %v - %v- %v - %v - %v - %v - %v -%v", to.Text, to.Font, to.Left, to.Top, to.Width, to.Height, to.DPI, to.Opacity, to.Spacing)
 	var out *C.VipsImage
+
 	text := C.CString(to.Text)
 	font := C.CString(to.Font)
 	background := [3]C.double{C.double(to.Background.R), C.double(to.Background.G), C.double(to.Background.B)}
 	opts := vipsTextOptions{text, font, C.int(to.Left), C.int(to.Top), C.int(to.Width), C.int(to.Height), C.int(to.DPI), C.float(to.Opacity), C.int(to.Spacing), background}
-
+	textOptions := (*C.VipsTextOptions)(unsafe.Pointer(&opts))
+	
 	defer C.free(unsafe.Pointer(text))
 	defer C.free(unsafe.Pointer(font))
-	textOptions := (*C.VipsTextOptions)(unsafe.Pointer(&opts))
 
 	fmt.Println("Prepare call C.vips_text_bridge function")
 	fmt.Printf("%+v\n", textOptions)
-	//err := C.vips_text_bridge(image, &out, textOptions)
-	// if err != 0 {
-	// 	return nil, catchVipsError()
-	// }
+	
+	err := C.vips_text_bridge(image, &out, textOptions)
+	if err != 0 {
+		return nil, catchVipsError()
+	}
 
 	fmt.Println("After call C.vips_text_bridge function")
 	return out, nil
